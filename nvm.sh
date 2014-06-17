@@ -178,11 +178,11 @@ nvm_ls_remote() {
 
 nvm_checksum() {
   if nvm_has "shasum"; then
-    checksum=$(shasum "$1" | awk '{print "$1"}')
+    checksum=$(shasum "$1" | awk '{print $1}')
   elif nvm_has "sha1"; then
     checksum=$(sha1 -q "$1")
   else
-    checksum=$(sha1sum "$1" | awk '{print "$1"}')
+    checksum=$(sha1sum "$1" | awk '{print $1}')
   fi
 
   if [ "$checksum" = "$2" ]; then
@@ -568,7 +568,7 @@ nvm() {
       RUN_NODE_PATH=$(nvm_strip_path "$NODE_PATH" "/lib/node_modules")
       RUN_NODE_PATH=$(nvm_prepend_path "$NODE_PATH" "$NVM_DIR/$VERSION/lib/node_modules")
       echo "Running node $VERSION"
-      NODE_PATH="$RUN_NODE_PATH" "$NVM_DIR/$VERSION/bin/node" "$@"
+      NODE_PATH=$RUN_NODE_PATH $NVM_DIR/$VERSION/bin/node "$@"
     ;;
     "ls" | "list" )
       local NVM_LS_OUTPUT
